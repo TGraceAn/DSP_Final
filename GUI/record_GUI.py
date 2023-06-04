@@ -3,7 +3,6 @@ from functools import partial
 from tkinter import *
 
 from numpy import record
-import record_GUI_img
 
 
 root = tk.Tk()
