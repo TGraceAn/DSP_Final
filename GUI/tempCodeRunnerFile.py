@@ -1,1 +1,2 @@
-    # def Record(self):
+
+            # Chuyển đổi sang miền tần số
