@@ -20,7 +20,7 @@ root = tk.Tk()
 root.geometry('1920x1080')
 # root.resizable(width=False, height=False)
 
-background = tk.PhotoImage(file="DSP_Final/GUI/record_GUI_img/background_new_img.png")
+background = tk.PhotoImage(file="GUI/record_GUI_img/background_new_img.png")
 label_background = tk.Label(root, image = background)
 label_background.pack()
 
@@ -57,7 +57,7 @@ def start_stream():
 
     # Khởi tạo figure cho matplotlib
 
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 15))
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(7, 8))
 
     # Thiết lập giá trị trục x, y cho FFT
     ax1.set_title("Frequency domain")
@@ -91,7 +91,7 @@ def start_stream():
     chunks_per_second = int(RATE / CHUNK)
 
     canvas = FigureCanvasTkAgg(fig, master=root)
-    canvas.get_tk_widget().place(x=1100,y = 0)
+    canvas.get_tk_widget().place(x=1150,y = 170)
     def update_plot(n):
         while n: 
             print(n)
@@ -187,8 +187,8 @@ def start_stream():
 
 
 
-record_img = tk.PhotoImage(file="DSP_Final/GUI/record_GUI_img/button/button_record_so_new.png")
-stop_record_img = tk.PhotoImage(file="DSP_Final/GUI/record_GUI_img/button/button_stop_so_new.png")
+record_img = tk.PhotoImage(file="GUI/record_GUI_img/button/button_record_so_new.png")
+stop_record_img = tk.PhotoImage(file="GUI/record_GUI_img/button/button_stop_so_new.png")
 
 # ----------------------------------------------------------------------------
 record_button = tk.Button(label_background, image = record_img, borderwidth=0, highlightthickness=0, command = start_stream)
