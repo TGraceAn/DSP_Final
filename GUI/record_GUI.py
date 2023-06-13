@@ -34,7 +34,7 @@ def start_stream():
         recording=stream
         print("recording=",recording)
         stream.stop_stream()
-        plt.stop()
+        # plt.stop()/\
         
         # Save the recorded data as a WAV file
         filename = "recorded_audio.wav"
