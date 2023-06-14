@@ -44,10 +44,10 @@ def start_stream():
     freqs = np.fft.rfftfreq(CHUNK, d=1. / RATE)
 
     # Khởi tạo figure cho matplotlib
+
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(7, 8))
 
     # Thiết lập giá trị trục x, y cho FFT
-    ax1.set_title("Frequency domain")
     ax1.set_xlim(40, 400)
     ax1.set_ylim(-20, 40)
     ax1.set_xlabel("")
@@ -73,6 +73,7 @@ def start_stream():
 
     # Create an empty list for storing maximum frequencies
     max_freqs = []
+    max_freqs_fft = []
 
     # Calculate chunks per second
     chunks_per_second = int(RATE / CHUNK)
@@ -81,6 +82,7 @@ def start_stream():
     canvas.get_tk_widget().place(x=1150,y = 170)
     def update_plot(n):
         while n: 
+            # Đọc data từ microphone và chuyển thành tín hiệu waveform
             data = stream.read(CHUNK)
             y = np.frombuffer(data, dtype=np.int16) / 32768.0
 
@@ -90,6 +92,11 @@ def start_stream():
             # Chuyển đổi sang miền tần số
             y_frequency = 20 * np.log10(abs(np.fft.rfft(filtered_data)))
             spectrum = abs(np.fft.rfft(filtered_data))
+
+            # Tìm giá trị cực đại FFT
+            max_index_fft = np.argmax(y_frequency)
+            max_freq_fft = freqs[max_index_fft]
+            max_magnitude_fft = y_frequency[max_index_fft]
 
             # modified HPS (HSS)
             hps = np.copy(spectrum)
@@ -107,6 +114,7 @@ def start_stream():
             ax1.draw_artist(line_fft)
 
             # Cập nhật spectrum trên đồ thị matplotlib HPS
+
             line_hps.set_ydata(hps)
             ax2.draw_artist(ax2.patch)
             ax2.draw_artist(line_hps)
@@ -115,7 +123,7 @@ def start_stream():
             fig.canvas.blit(ax2.bbox)
             fig.canvas.flush_events()
 
-            # Hiển thị giá trị cực đại trên đồ thị
+            # Hiển thị giá trị cực đại của miền Harmonic
 
             max_freqs.append(fundamental_frequency)
 
@@ -123,19 +131,44 @@ def start_stream():
                 max_freqs.pop(0)
 
             average_max_freq = np.mean(max_freqs)
-            ax2.set_title(f"Average Fundamental Frequency: {average_max_freq:.2f} Hz")
+            ax2.set_title(f"Average Fundamental Frequency (HPS): {average_max_freq:.2f} Hz")
 
-            if 81 <= fundamental_frequency and fundamental_frequency <= 83:
+
+            # Hiển thị giá trị cực đại của miền tần số
+            max_freqs_fft.append(max_magnitude_fft)
+
+            if len(max_freqs_fft) > chunks_per_second:
+                max_freqs_fft.pop(0)
+
+            average_max_freq_fft = np.mean(max_freqs_fft)
+            ax1.set_title(f"Average Highest Frequency: {average_max_freq_fft:.2f} Hz")
+
+            if 81 <= max_magnitude_fft <= 83:
+                line_fft.set_color('green')
+            elif 109 <= max_magnitude_fft <= 111:
+                line_fft.set_color('green')
+            elif 146 <= max_magnitude_fft <= 148:
+                line_fft.set_color('green')
+            elif 195 <= max_magnitude_fft <= 197:
+                line_fft.set_color('green')
+            elif 246 <= max_magnitude_fft <= 248:
+                line_fft.set_color('green')
+            elif 328 <= max_magnitude_fft <= 330:
+                line_fft.set_color('green')
+            else:
+                line_fft.set_color('blue')
+
+            if 81 <= fundamental_frequency <= 83:
                 line_hps.set_color('green')
-            elif 109 <= fundamental_frequency and fundamental_frequency <= 111:
+            elif 109 <= fundamental_frequency <= 111:
                 line_hps.set_color('green')
-            elif 146 <= fundamental_frequency and fundamental_frequency <= 148:
+            elif 146 <= fundamental_frequency <= 148:
                 line_hps.set_color('green')
-            elif 195 <= fundamental_frequency and fundamental_frequency <= 197:
+            elif 195 <= fundamental_frequency <= 197:
                 line_hps.set_color('green')
-            elif 246 <= fundamental_frequency and fundamental_frequency <= 248:
+            elif 246 <= fundamental_frequency <= 248:
                 line_hps.set_color('green')
-            elif 328 <= fundamental_frequency and fundamental_frequency <= 330:
+            elif 328 <= fundamental_frequency <= 330:
                 line_hps.set_color('green')
             else:
                 line_hps.set_color('red')
