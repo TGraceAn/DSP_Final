@@ -43,7 +43,6 @@ def start_stream():
     freqs = np.fft.rfftfreq(CHUNK, d=1. / RATE)
 
     # Khởi tạo figure cho matplotlib
-
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(7, 8))
 
     # Thiết lập giá trị trục x, y cho FFT
@@ -105,7 +104,6 @@ def start_stream():
             ax1.draw_artist(line_fft)
 
             # Cập nhật spectrum trên đồ thị matplotlib HPS
-
             line_hps.set_ydata(hps)
             ax2.draw_artist(ax2.patch)
             ax2.draw_artist(line_hps)
