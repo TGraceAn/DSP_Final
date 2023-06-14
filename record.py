@@ -17,10 +17,9 @@ freqs = np.fft.rfftfreq(CHUNK, d=1. / RATE)
 
 # Khởi tạo figure cho matplotlib
 
-fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 7))
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 15))
 
 # Thiết lập giá trị trục x, y cho FFT
-ax1.set_title("Frequency domain")
 ax1.set_xlim(40, 400)
 ax1.set_ylim(-20, 40)
 ax1.set_xlabel("")
@@ -46,6 +45,7 @@ b, a = signal.butter(order, [low, high], btype='band')
 
 # Create an empty list for storing maximum frequencies
 max_freqs = []
+max_freqs_fft = []
 
 # Calculate chunks per second
 chunks_per_second = int(RATE / CHUNK)
@@ -74,6 +74,13 @@ while True:
         hps[:len(downsampled)] += downsampled
     fundamental_index = np.argmax(hps)
 
+    # Calculate HPS
+    # hps = np.copy(spectrum)
+    # for h in range(2, 6):
+    #     decimated = np.copy(y)[::h]
+    #     spectrum_h = np.fft.rfft(decimated)
+    #     hps[:len(spectrum_h)] *= abs(spectrum_h)
+
     # Tìm fundamental frequency
     fundamental_frequency = 44100 * fundamental_index / len(filtered_data)
 
@@ -92,7 +99,7 @@ while True:
     fig.canvas.blit(ax2.bbox)
     fig.canvas.flush_events()
 
-    # Hiển thị giá trị cực đại trên đồ thị
+    # Hiển thị giá trị cực đại của miền Harmonic
 
     max_freqs.append(fundamental_frequency)
 
@@ -100,7 +107,35 @@ while True:
         max_freqs.pop(0)
 
     average_max_freq = np.mean(max_freqs)
-    ax2.set_title(f"Average Fundamental Frequency: {average_max_freq:.2f} Hz")
+    ax2.set_title(f"Average Fundamental Frequency (HPS): {average_max_freq:.2f} Hz")
+
+
+    # Hiển thị giá trị cực đại của miền tần số
+    max_freqs_fft.append(max_magnitude_fft)
+
+    if len(max_freqs_fft) > chunks_per_second:
+        max_freqs_fft.pop(0)
+
+    average_max_freq_fft = np.mean(max_freqs_fft)
+    ax1.set_title(f"Average Highest Frequency: {average_max_freq_fft:.2f} Hz")
+
+    # print("FFT", max_freq_fft)
+    if 81 <= max_magnitude_fft <= 83:
+        line_fft.set_color('green')
+    elif 109 <= max_magnitude_fft <= 111:
+        line_fft.set_color('green')
+    elif 146 <= max_magnitude_fft <= 148:
+        line_fft.set_color('green')
+    elif 195 <= max_magnitude_fft <= 197:
+        line_fft.set_color('green')
+    elif 246 <= max_magnitude_fft <= 248:
+        line_fft.set_color('green')
+    elif 328 <= max_magnitude_fft <= 330:
+        line_fft.set_color('green')
+    else:
+        line_fft.set_color('red')
+
+
 
     print("HPS", fundamental_frequency)
     if 81 <= fundamental_frequency <= 83:
