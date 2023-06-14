@@ -10,7 +10,6 @@ from scipy import signal
 
 root = tk.Tk()
 root.geometry('1920x1080')
-# root.resizable(width=False, height=False)
 
 background = tk.PhotoImage(file="GUI/record_GUI_img/background_new_img.png")
 label_background = tk.Label(root, image = background)
@@ -71,9 +70,6 @@ def start_stream():
     high = highcut / nyquist
     b, a = signal.butter(order, [low, high], btype='band')
 
-    # Calculate chunks per second
-    chunks_per_second = int(RATE / CHUNK)
-
     canvas = FigureCanvasTkAgg(fig, master=root)
     canvas.get_tk_widget().place(x=1150,y = 170)
     def update_plot(n):
@@ -91,7 +87,6 @@ def start_stream():
 
             # Tìm giá trị cực đại FFT
             max_index_fft = np.argmax(y_frequency)
-            max_freq_fft = freqs[max_index_fft]
             max_magnitude_fft = y_frequency[max_index_fft]
 
             # modified HPS (HSS)

@@ -74,13 +74,6 @@ while True:
         hps[:len(downsampled)] += downsampled
     fundamental_index = np.argmax(hps)
 
-    # Calculate HPS
-    # hps = np.copy(spectrum)
-    # for h in range(2, 6):
-    #     decimated = np.copy(y)[::h]
-    #     spectrum_h = np.fft.rfft(decimated)
-    #     hps[:len(spectrum_h)] *= abs(spectrum_h)
-
     # Tìm fundamental frequency
     fundamental_frequency = 44100 * fundamental_index / len(filtered_data)
 
@@ -90,7 +83,6 @@ while True:
     ax1.draw_artist(line_fft)
 
     # Cập nhật spectrum trên đồ thị matplotlib HPS
-
     line_hps.set_ydata(hps)
     ax2.draw_artist(ax2.patch)
     ax2.draw_artist(line_hps)
@@ -100,7 +92,6 @@ while True:
     fig.canvas.flush_events()
 
     # Hiển thị giá trị cực đại của miền Harmonic
-
     max_freqs.append(fundamental_frequency)
 
     if len(max_freqs) > chunks_per_second:
@@ -119,7 +110,6 @@ while True:
     average_max_freq_fft = np.mean(max_freqs_fft)
     ax1.set_title(f"Average Highest Frequency: {average_max_freq_fft:.2f} Hz")
 
-    # print("FFT", max_freq_fft)
     if 81 <= max_magnitude_fft <= 83:
         line_fft.set_color('green')
     elif 109 <= max_magnitude_fft <= 111:
@@ -133,11 +123,8 @@ while True:
     elif 328 <= max_magnitude_fft <= 330:
         line_fft.set_color('green')
     else:
-        line_fft.set_color('red')
+        line_fft.set_color('blue')
 
-
-
-    print("HPS", fundamental_frequency)
     if 81 <= fundamental_frequency <= 83:
         line_hps.set_color('green')
     elif 109 <= fundamental_frequency <= 111:
