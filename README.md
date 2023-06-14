@@ -11,6 +11,7 @@
   
   scipy             23.1.2
 
+If you still can't use it. Try using a window laptop
 # Process to use application
 Step 1: Run the file named "main.py"
 
