@@ -35,7 +35,7 @@ def start_stream():
     stop_record_button = tk.Button(label_background, image=stop_record_img, borderwidth=0, highlightthickness=0, command = stop_stream)
     stop_record_button.place(x=870, y=650)
     
-    CHUNK = 4096  # số mẫu audio trong mỗi chunk
+    CHUNK = 8192  # số mẫu audio trong mỗi chunk
     RATE = 44100  # số mẫu audio trên giây
     p = pyaudio.PyAudio()
     stream = p.open(format=pyaudio.paInt16, channels=1, rate=RATE, input=True, frames_per_buffer=CHUNK)
@@ -70,10 +70,6 @@ def start_stream():
     low = lowcut / nyquist
     high = highcut / nyquist
     b, a = signal.butter(order, [low, high], btype='band')
-
-    # Create an empty list for storing maximum frequencies
-    max_freqs = []
-    max_freqs_fft = []
 
     # Calculate chunks per second
     chunks_per_second = int(RATE / CHUNK)
@@ -122,26 +118,8 @@ def start_stream():
             fig.canvas.blit(ax1.bbox)
             fig.canvas.blit(ax2.bbox)
             fig.canvas.flush_events()
-
-            # Hiển thị giá trị cực đại của miền Harmonic
-
-            max_freqs.append(fundamental_frequency)
-
-            if len(max_freqs) > chunks_per_second:
-                max_freqs.pop(0)
-
-            average_max_freq = np.mean(max_freqs)
-            ax2.set_title(f"Average Fundamental Frequency (HPS): {average_max_freq:.2f} Hz")
-
-
-            # Hiển thị giá trị cực đại của miền tần số
-            max_freqs_fft.append(max_magnitude_fft)
-
-            if len(max_freqs_fft) > chunks_per_second:
-                max_freqs_fft.pop(0)
-
-            average_max_freq_fft = np.mean(max_freqs_fft)
-            ax1.set_title(f"Average Highest Frequency: {average_max_freq_fft:.2f} Hz")
+            ax2.set_title(f"Fundamental Frequency (HPS): {fundamental_frequency:.2f} Hz")
+            ax1.set_title(f"Highest Amplitude Frequency: {max_magnitude_fft:.2f} Hz")
 
             if 81 <= max_magnitude_fft <= 83:
                 line_fft.set_color('green')

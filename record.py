@@ -48,7 +48,7 @@ max_freqs = []
 max_freqs_fft = []
 
 # Calculate chunks per second
-chunks_per_second = int(RATE / CHUNK)
+chunks_per_second = int(RATE/CHUNK)
 
 while True:
     # Đọc data từ microphone và chuyển thành tín hiệu waveform
@@ -107,7 +107,7 @@ while True:
         max_freqs.pop(0)
 
     average_max_freq = np.mean(max_freqs)
-    ax2.set_title(f"Average Fundamental Frequency (HPS): {average_max_freq:.2f} Hz")
+    ax2.set_title(f"Average Fundamental Frequency (HPS): {fundamental_frequency:.2f} Hz")
 
 
     # Hiển thị giá trị cực đại của miền tần số
