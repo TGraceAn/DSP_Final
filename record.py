@@ -74,13 +74,6 @@ while True:
         hps[:len(downsampled)] += downsampled
     fundamental_index = np.argmax(hps)
 
-    # Calculate HPS
-    # hps = np.copy(spectrum)
-    # for h in range(2, 6):
-    #     decimated = np.copy(y)[::h]
-    #     spectrum_h = np.fft.rfft(decimated)
-    #     hps[:len(spectrum_h)] *= abs(spectrum_h)
-
     # Tìm fundamental frequency
     fundamental_frequency = 44100 * fundamental_index / len(filtered_data)
 
@@ -108,8 +101,6 @@ while True:
 
     average_max_freq = np.mean(max_freqs)
     ax2.set_title(f"Average Fundamental Frequency: {average_max_freq:.2f} Hz")
-
-    # print("FFT", max_freq_fft)
 
     print("HPS", fundamental_frequency)
     if 81 <= fundamental_frequency <= 83:
