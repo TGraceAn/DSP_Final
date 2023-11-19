@@ -1,0 +1,4 @@
+pyaudio==23.1.2
+numpy==23.1.2
+scipy==23.1.2
+matplotlib==23.1.2
