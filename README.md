@@ -1,11 +1,12 @@
 # DSP_Final
 
 If you still can't use it. Try using a window laptop
+
 Sorry code hasn't been optimized yet
 
 # Process to use application
 
-The necessary Python packages to run the code is installed by running:
+The necessary Python packages to run the code are installed by running:
 ```shell
 pip install -r requirements.txt
 ```
